@@ -1,8 +1,10 @@
 import { Injectable } from '@nestjs/common';
+import { LogMethod } from './decorator';
 
 @Injectable()
 export class AppService {
-  getHello(): string {
-    return 'Hello World!';
-  }
+    @LogMethod({ message: 'getHello' })
+    getHello(): string {
+        return 'Hello World!';
+    }
 }
