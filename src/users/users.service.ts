@@ -1,6 +1,7 @@
 import { Injectable, HttpException } from '@nestjs/common';
 import { CreateUserDTO } from './dto/createUser.dto';
 import { Observable, of } from 'rxjs';
+import { LogMethod } from '../decorator';
 
 @Injectable()
 export class UsersService {
@@ -11,9 +12,12 @@ export class UsersService {
     ];
 
     //使用Promise，盡可能避免使用callback方式。
+    @LogMethod({ message: 'get all users' })
     getAllUsers() {
         return Promise.resolve(this.users);
     }
+
+    @LogMethod({ message: 'get user', success: { includeDetail: true } })
     getUser(id: number) {
         const user = this.users.find(user => {
             return user._id === id;
@@ -25,6 +29,7 @@ export class UsersService {
         return Promise.resolve(user);
     }
     //在nestjs也是可以歡樂使用Rx.js
+    @LogMethod({ message: 'add user', success: { includeDetail: true } })
     addUser(user: CreateUserDTO): Observable<object[]> {
         this.users.push(user);
         return of(this.users);

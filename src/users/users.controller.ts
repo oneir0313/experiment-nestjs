@@ -1,6 +1,7 @@
-import { Controller, Get, Post, Request, Response, Param, Next, HttpStatus, Body } from '@nestjs/common';
+import { Controller, Get, Post, Request, Param, Next, HttpStatus, Body, Res } from '@nestjs/common';
 import { UsersService } from './users.service';
 import { CreateUserDTO } from './dto/createUser.dto';
+import { Response } from 'express';
 
 @Controller('users')
 export class UsersController {
@@ -9,7 +10,7 @@ export class UsersController {
 
     @Get()
     //使用Express的參數
-    async getAllUsers(@Request() req, @Response() res, @Next() next) {
+    async getAllUsers(@Res() res: Response) {
         //Promise 有then catch方法可以調用
         await this.userService
             .getAllUsers()
@@ -26,7 +27,7 @@ export class UsersController {
     @Get('/:id')
     //使用Express的參數
     //@Param('id')可以直接抓id參數
-    async getUser(@Response() res, @Param('id') id) {
+    async getUser(@Res() res: Response, @Param('id') id: string) {
         //+id ，+符號可以直接把string 轉換成number
         await this.userService
             .getUser(+id)
@@ -40,9 +41,9 @@ export class UsersController {
     }
 
     @Post()
-    async addUser(@Response() res, @Body() createUserDTO: CreateUserDTO) {
+    async addUser(@Res() res: Response, @Body() createUserDTO: CreateUserDTO) {
         //使用Rx.js，所以回傳可以做更多資料流的處理
-        await this.userService.addUser(createUserDTO).subscribe(users => {
+        this.userService.addUser(createUserDTO).subscribe(users => {
             res.status(HttpStatus.OK).json(users);
         });
     }

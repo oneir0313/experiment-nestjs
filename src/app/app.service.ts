@@ -1,5 +1,5 @@
 import { Injectable } from '@nestjs/common';
-import { LogMethod } from './decorator';
+import { LogMethod } from '../decorator';
 
 @Injectable()
 export class AppService {
