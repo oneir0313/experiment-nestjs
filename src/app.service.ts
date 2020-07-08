@@ -3,7 +3,7 @@ import { LogMethod } from './decorator';
 
 @Injectable()
 export class AppService {
-    @LogMethod({ message: 'getHello' })
+    @LogMethod({ message: 'get hello' })
     getHello(): string {
         return 'Hello World!';
     }
